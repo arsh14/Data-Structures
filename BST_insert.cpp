@@ -30,7 +30,45 @@ class BST{
 			}
 			
 		}
-		
+		void removePrivate(int data, Node *&root){
+			if(root==NULL){
+				return;
+			}
+			else if(data<root->data){
+				removePrivate(data, root->left);
+			}
+			else if(data>root->data){
+				removePrivate(data, root->right);
+			}
+			else{
+				if (root->left==NULL && root->right==NULL){
+					delete root;
+					root=NULL;
+				}
+				else if(root->left==NULL){
+					Node *temp=root;
+					root=root->right;
+					delete temp;
+				}
+				else if(root->right==NULL){
+					Node *temp=root;
+					root=root->left;
+					delete temp;
+				}
+				else {
+					Node *temp=findMin(root->right);
+					root->data=temp->data;
+					removePrivate(temp->data,root->right);
+					}
+				}
+			}
+		Node* findMin(Node *root){
+			while (root->left!=NULL){
+				root=root->left;
+			}
+			return root;
+				
+	}
 	public:
 		BST(){
 			root=NULL;
@@ -38,6 +76,11 @@ class BST{
 		void insert(int data){
 			insertPrivate(data, *&root);
 		}
+		void remove(int data){
+			removePrivate(data, *&root);
+		}
+	
+		
 };
 
 int main(){
@@ -47,6 +90,8 @@ int main(){
 	tree.insert(3);
 	tree.insert(9);
 	tree.insert(12);
+	tree.remove(6);
+	return 0;
 	
 }
 
